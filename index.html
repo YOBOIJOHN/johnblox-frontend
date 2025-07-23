@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOHNBLOX - Home</title>
+    <style>
+        /* Base Styles */
+        body {
+            margin: 0;
+            font-family: Verdana, Arial, sans-serif;
+            background-color: #c9d4e4; /* New Background Color */
+            color: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #0074cc; /* New Header Blue */
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        /* Username in Header (Centered) */
+        .topbar-username {
+            flex-grow: 1; /* Takes available space */
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #fff; /* Ensure white text */
+        }
+
+        .currency {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .currency span, .currency a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Main Container Layout */
+        .container {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 220px;
+            background-color: #dee7f6; /* New Sidebar Blue */
+            padding: 20px;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            color: #003366; /* Darker blue for sidebar heading */
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .sidebar a {
+            display: block;
+            background: #0066cc; /* Sidebar link background blue */
+            color: #fff;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .sidebar a:hover {
+            background: #004c99; /* Darker blue on hover */
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background: #b3d1f0; /* New Main Content Blue */
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            gap: 30px; /* Space between sections */
+        }
+
+        /* Profile Section (Avatar & Greeting) */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #fff; /* White background for this card */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px; /* Limit width */
+            box-sizing: border-box;
+        }
+
+        .profile-avatar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%; /* Circular */
+            border: 3px solid #000; /* Black border */
+            object-fit: cover;
+        }
+
+        .greeting {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Recommend Section */
+        .recommend {
+            width: 100%;
+            max-width: 800px; /* Limit width */
+            text-align: center;
+            background: #fff; /* White background for this card */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        .recommend h2 {
+            font-size: 20px;
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        .games-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap; /* Allow wrapping for responsiveness */
+        }
+
+        .game-card {
+            width: 180px; /* Fixed width */
+            height: 180px; /* Fixed height */
+            background: #fff;
+            border: 4px solid #000; /* Black border */
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Test Currency Actions Section */
+        .currency-actions {
+            background-color: #ffffff;
+            color: #333;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .currency-actions h2 {
+            color: #0074cc; /* Matches header blue */
+            margin-bottom: 20px;
+        }
+        .currency-actions button {
+            background-color: #28a745; /* Green button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+            margin: 5px;
+        }
+        .currency-actions button:hover {
+            background-color: #218838;
+        }
+
+        /* Message Area for Feedback */
+        #message-area { 
+            margin-top: 20px; 
+            padding: 10px; 
+            background-color: #ffe0b2; 
+            border: 1px solid #ffb74d; 
+            border-radius: 5px; 
+            color: #333; 
+            display: none; 
+            width: 100%; 
+            max-width: 600px; 
+            text-align: left; 
+            box-sizing: border-box; 
+        }
+
+        /* Footer Styles */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #333;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+        .footer a {
+            color: #0066cc; /* Link color matching sidebar links */
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                padding: 10px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            .sidebar h2 {
+                margin-bottom: 10px;
+            }
+            .sidebar a {
+                margin: 5px 0;
+            }
+            .profile-section, .recommend, .currency-actions {
+                max-width: 100%;
+            }
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .games-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            .game-card {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+    <!-- Parse SDK CDN -->
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+</head>
+<body>
+    <header>
+        <img src="jogo.png" alt="JOHNBLOX Logo" class="logo">
+        <div class="topbar-username" id="topbar-username">Guest</div>
+        <div class="currency">
+            <span id="johnbux-display">Johnbux: 0</span>
+            <span id="jix-display">Jix: 0</span>
+            <a href="login.html" id="login-link">Login</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Navigation</h2>
+            <a href="index.html">Home</a>
+            <a href="games.html">Games</a>
+            <a href="studio.html">Studio</a>
+            <a href="shop.html">Shop</a>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+        </div>
+
+        <div class="main-content">
+            <div class="profile-section">
+                <div class="profile-avatar">
+                    <img src="profile_placeholder.png" alt="Avatar">
+                </div>
+                <div class="greeting" id="greeting-text">Hello Guest</div>
+            </div>
+
+            <div class="recommend">
+                <h2>Recommended Games</h2>
+                <div class="games-grid">
+                    <div class="game-card"><img src="recommended_game_1.png" alt="Game 1"></div>
+                    <div class="game-card"><img src="recommended_game_2.png" alt="Game 2"></div>
+                </div>
+            </div>
+
+            <div class="currency-actions">
+                <h2>Test Currency Actions</h2>
+                <p>Click these buttons to simulate earning/spending currency.</p>
+                <button class="action-button" onclick="earnJohnbux(10)">Earn 10 Johnbux</button>
+                <button class="action-button" onclick="spendJohnbux(5)">Spend 5 Johnbux</button>
+            </div>
+
+            <div id="message-area"></div>
+            
+            <div class="footer">
+                <p>© 2025 JOHN.BLOX | <a href="https://discord.gg/KAN5euwyTj" target="_blank">Join Discord</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // *** BACK4APP KEYS (Copied from your dashboard image) ***
+        const APP_ID = 'UolRo1iE7vzgUI6J8OWGPrttMsCISDt4FrKtgfHWoCj'; // Your App ID from Back4App
+        const JS_KEY = 'UpgDbqfWwBHyj8saGbCwWcCR5QU3ngG0zBb4Zbu8UHm'; // Your JavaScript Key from Back4App
+
+        // Initialize Parse
+        Parse.initialize(APP_ID, JS_KEY);
+        Parse.serverURL = 'https://parseapi.back4app.com/'; // Standard Back4App Parse Server URL
+
+        let currentUser = Parse.User.current(); // Get current logged-in user
+
+        const topbarUsernameEl = document.getElementById('topbar-username');
+        const johnbuxDisplay = document.getElementById('johnbux-display');
+        const jixDisplay = document.getElementById('jix-display');
+        const loginLink = document.getElementById('login-link');
+        const greetingTextEl = document.getElementById('greeting-text');
+        const messageArea = document.getElementById('message-area');
+
+        function showMessage(msg, type = 'info') {
+            messageArea.textContent = msg;
+            messageArea.style.display = 'block';
+            messageArea.style.backgroundColor = type === 'error' ? '#ffe0e0' : '#e0ffe0';
+            messageArea.style.borderColor = type === 'error' ? '#ff9999' : '#99ff99';
+            messageArea.style.color = type === 'error' ? '#d9534f' : '#28a745';
+            setTimeout(() => { messageArea.style.display = 'none'; }, 5000);
+        }
+
+        async function updateCurrencyAndUserDisplay() {
+            currentUser = Parse.User.current(); // Refresh current user status
+            if (currentUser) {
+                // Fetch latest user data from server (important for currency)
+                try {
+                    await currentUser.fetch(); 
+                    topbarUsernameEl.textContent = currentUser.get("username") || currentUser.get("email");
+                    greetingTextEl.textContent = `Hello ${topbarUsernameEl.textContent}`;
+                    loginLink.style.display = 'none';
+                    johnbuxDisplay.textContent = `Johnbux: ${currentUser.get("johnbux") || 0}`;
+                    jixDisplay.textContent = `Jix: ${currentUser.get("jix") || 0}`;
+                } catch (error) {
+                    console.error("Error fetching current user data:", error);
+                    showMessage("Error loading user data. Please log in again.", 'error');
+                    logout();
+                }
+            } else {
+                topbarUsernameEl.textContent = 'Guest';
+                greetingTextEl.textContent = 'Hello Guest';
+                loginLink.style.display = 'inline';
+                johnbuxDisplay.textContent = 'Johnbux: 0';
+                jixDisplay.textContent = 'Jix: 0';
+            }
+        }
+
+        async function earnJohnbux(amount) {
+            if (!Parse.User.current()) { showMessage("Please log in to earn Johnbux.", 'error'); return; }
+            try {
+                // Call Cloud Code function
+                const result = await Parse.Cloud.run("earnJohnbux", { amount: amount });
+                showMessage(result.message, 'info');
+                await updateCurrencyAndUserDisplay(); // Update display
+            } catch (error) {
+                console.error("Error calling earnJohnbux Cloud Function:", error);
+                showMessage(`Error earning Johnbux: ${error.message}`, 'error');
+            }
+        }
+
+        async function spendJohnbux(amount) {
+            if (!Parse.User.current()) { showMessage("Please log in to spend Johnbux.", 'error'); return; }
+            try {
+                // Call Cloud Code function
+                const result = await Parse.Cloud.run("spendJohnbux", { amount: amount });
+                showMessage(result.message, 'info');
+                await updateCurrencyAndUserDisplay(); // Update display
+            } catch (error) {
+                console.error("Error calling spendJohnbux Cloud Function:", error);
+                showMessage(`Error spending Johnbux: ${error.message}`, 'error');
+            }
+        }
+
+        function logout() {
+            Parse.User.logOut().then(() => {
+                currentUser = null; // Clear local reference
+                localStorage.removeItem('johnblox_username'); // Clear from local storage (if stored for convenience)
+                updateCurrencyAndUserDisplay();
+                window.location.href = "login.html"; // Redirect to login page
+            }).catch((error) => {
+                console.error("Error logging out:", error);
+                showMessage(`Error logging out: ${error.message}`, 'error');
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCurrencyAndUserDisplay);
+    </script>
+</body>
+</html>
