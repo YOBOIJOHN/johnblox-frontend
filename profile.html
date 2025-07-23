@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOHNBLOX - Profile</title>
+    <style>
+        /* Shared CSS from previous files */
+        body { margin: 0; font-family: Verdana, Arial, sans-serif; background-color: #c9d4e4; color: #000; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background-color: #0074cc; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 8px rgba(0,0,0,0.2); flex-shrink: 0; }
+        .logo { height: 40px; }
+        .topbar-username { flex-grow: 1; text-align: center; font-weight: bold; font-size: 18px; color: #fff; }
+        .currency { display: flex; gap: 15px; font-size: 14px; }
+        .currency span, .currency a { color: #fff; text-decoration: none; font-weight: bold; }
+        .container { display: flex; flex-grow: 1; }
+        .sidebar { width: 220px; background-color: #dee7f6; padding: 20px; box-shadow: 2px 0 8px rgba(0,0,0,0.1); overflow-y: auto; flex-shrink: 0; }
+        .sidebar h2 { color: #003366; text-align: center; margin-bottom: 20px; font-size: 18px; }
+        .sidebar a { display: block; background: #0066cc; color: #fff; padding: 10px; margin: 8px 0; border-radius: 5px; text-decoration: none; text-align: center; font-weight: bold; transition: background 0.2s; }
+        .sidebar a:hover { background: #004c99; }
+        .main-content { flex-grow: 1; padding: 20px; background: #b3d1f0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .card { background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); width: 100%; max-width: 600px; text-align: center; box-sizing: border-box; }
+        .card h1 { color: #0074cc; margin-top: 0; font-size: 28px; }
+        .profile-details-section, .settings-section { background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); width: 100%; max-width: 600px; text-align: left; box-sizing: border-box; }
+        .profile-details-section h2, .settings-section h2 { color: #0074cc; margin-top: 0; margin-bottom: 20px; font-size: 24px; text-align: center; }
+        .profile-details-section p { margin-bottom: 10px; font-size: 1.1em; color: #333; }
+        .settings-section ul { list-style: none; padding: 0; }
+        .settings-section li { margin-bottom: 10px; font-size: 1.1em; color: #333; }
+        .settings-section li a { color: #0066cc; text-decoration: none; font-weight: bold; }
+        .settings-section li a:hover { text-decoration: underline; }
+        #profile-message-area { margin-top: 20px; padding: 10px; background-color: #ffe0b2; border: 1px solid #ffb74d; border-radius: 5px; color: #333; display: none; width: 100%; max-width: 600px; text-align: left; box-sizing: border-box; }
+        .footer { text-align: center; margin-top: 40px; font-size: 14px; color: #333; padding: 20px; width: 100%; box-sizing: border-box; flex-shrink: 0; }
+        .footer a { color: #0066cc; text-decoration: none; font-weight: bold; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .container { flex-direction: column; } .sidebar { width: 100%; height: auto; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } .sidebar h2 { margin-bottom: 10px; } .sidebar a { margin: 5px 0; } .profile-details-section, .settings-section { max-width: 100%; } }
+    </style>
+    <!-- Parse SDK CDN -->
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+</head>
+<body>
+    <header>
+        <img src="jogo.png" alt="JOHNBLOX Logo" class="logo">
+        <div class="topbar-username" id="topbar-username">Guest</div>
+        <div class="currency">
+            <span id="johnbux-display">Johnbux: 0</span>
+            <span id="jix-display">Jix: 0</span>
+            <a href="login.html" id="login-link">Login</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Navigation</h2>
+            <a href="index.html">Home</a>
+            <a href="games.html">Games</a>
+            <a href="studio.html">Studio</a>
+            <a href="shop.html">Shop</a>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+        </div>
+
+        <div class="main-content">
+            <div class="profile-details-section">
+                <h2>Your Profile</h2>
+                <div id="profile-info-display">
+                    <p><strong>Username:</strong> <span id="profile-username">Loading...</span></p>
+                    <p><strong>Email:</strong> <span id="profile-email">Loading...</span></p>
+                    <p><strong>Birthday:</strong> <span id="profile-birthday">Loading...</span></p>
+                    <p><strong>Johnbux:</strong> <span id="profile-johnbux">Loading...</span></p>
+                    <p><strong>Jix:</strong> <span id="profile-jix">Loading...</span></p>
+                    <p><strong>Member Since:</strong> <span id="profile-member-since">Loading...</span></p>
+                </div>
+                <div id="profile-message-area"></div>
+            </div>
+
+            <div class="settings-section">
+                <h2>Settings</h2>
+                <ul>
+                    <li><a href="#">Change Password</a></li>
+                    <li><a href="#">Privacy Settings</a></li>
+                    <li><a href="#">Notification Preferences</a></li>
+                    <li><a href="#">Account Deletion</a></li>
+                </ul>
+            </div>
+
+            <div class="footer">
+                <p>© 2025 JOHN.BLOX | <a href="https://discord.gg/KAN5euwyTj" target="_blank">Join Discord</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // *** BACK4APP KEYS (Copied from your dashboard image) ***
+        const APP_ID = 'UolRo1iE7vzgUI6J8OWGPrttMsCISDt4FrKtgfHWoCj';
+        const JS_KEY = 'UpgDbqfWwBHyj8saGbCwWcCR5QU3ngG0zBb4Zbu8UHm';
+
+        // Initialize Parse
+        Parse.initialize(APP_ID, JS_KEY);
+        Parse.serverURL = 'https://parseapi.back4app.com/'; 
+
+        let currentUser = Parse.User.current(); 
+
+        const topbarUsernameEl = document.getElementById('topbar-username');
+        const johnbuxDisplay = document.getElementById('johnbux-display');
+        const jixDisplay = document.getElementById('jix-display');
+        const loginLink = document.getElementById('login-link');
+        
+        const profileUsernameEl = document.getElementById('profile-username');
+        const profileEmailEl = document.getElementById('profile-email');
+        const profileBirthdayEl = document.getElementById('profile-birthday');
+        const profileJohnbuxEl = document.getElementById('profile-johnbux');
+        const profileJixEl = document.getElementById('profile-jix');
+        const profileMemberSinceEl = document.getElementById('profile-member-since');
+        const profileMessageArea = document.getElementById('profile-message-area');
+
+
+        function showProfileMessage(msg, type = 'info') {
+            profileMessageArea.textContent = msg;
+            profileMessageArea.style.display = 'block';
+            profileMessageArea.style.backgroundColor = type === 'error' ? '#ffe0e0' : '#e0ffe0';
+            profileMessageArea.style.borderColor = type === 'error' ? '#ff9999' : '#99ff99';
+            profileMessageArea.style.color = type === 'error' ? '#d9534f' : '#28a745';
+            setTimeout(() => { profileMessageArea.style.display = 'none'; }, 5000);
+        }
+
+        async function updateCurrencyAndUserDisplay() {
+            currentUser = Parse.User.current(); 
+            if (currentUser) {
+                try {
+                    await currentUser.fetch(); 
+                    topbarUsernameEl.textContent = currentUser.get("username") || currentUser.get("email");
+                    loginLink.style.display = 'none';
+
+                    // Profile page specific updates
+                    if (profileUsernameEl) profileUsernameEl.textContent = currentUser.get("username") || currentUser.get("email");
+                    if (profileEmailEl) profileEmailEl.textContent = currentUser.get("email") || 'N/A';
+                    if (profileBirthdayEl) profileBirthdayEl.textContent = currentUser.get("birthday") ? new Date(currentUser.get("birthday").iso).toLocaleDateString() : 'N/A';
+                    if (profileJohnbuxEl) profileJohnbuxEl.textContent = currentUser.get("johnbux") || 0;
+                    if (profileJixEl) profileJixEl.textContent = currentUser.get("jix") || 0;
+                    if (profileMemberSinceEl) profileMemberSinceEl.textContent = currentUser.get("createdAt") ? new Date(currentUser.get("createdAt").iso).toLocaleDateString() : 'N/A';
+                    
+                    johnbuxDisplay.textContent = `Johnbux: ${currentUser.get("johnbux") || 0}`;
+                    jixDisplay.textContent = `Jix: ${currentUser.get("jix") || 0}`;
+
+                } catch (error) {
+                    console.error("Error fetching current user data:", error);
+                    showProfileMessage("Error loading user data. Please log in again.", 'error');
+                    logout();
+                }
+            } else {
+                topbarUsernameEl.textContent = 'Guest';
+                loginLink.style.display = 'inline';
+                johnbuxDisplay.textContent = 'Johnbux: 0';
+                jixDisplay.textContent = 'Jix: 0';
+
+                // Profile page specific updates if not logged in
+                if (profileUsernameEl) profileUsernameEl.textContent = 'N/A';
+                if (profileEmailEl) profileEmailEl.textContent = 'N/A';
+                if (profileBirthdayEl) profileBirthdayEl.textContent = 'N/A';
+                if (profileJohnbuxEl) profileJohnbuxEl.textContent = 'N/A';
+                if (profileJixEl) profileJixEl.textContent = 'N/A';
+                if (profileMemberSinceEl) profileMemberSinceEl.textContent = 'N/A';
+                if (window.location.pathname.includes('profile.html')) { // Only show message on profile page
+                    showProfileMessage("Please log in to view your profile.", 'info');
+                }
+            }
+        }
+
+        function logout() {
+            Parse.User.logOut().then(() => {
+                currentUser = null; 
+                localStorage.removeItem('johnblox_username'); 
+                updateCurrencyAndUserDisplay();
+                window.location.href = "login.html"; 
+            }).catch((error) => {
+                console.error("Error logging out:", error);
+                showProfileMessage(`Error logging out: ${error.message}`, 'error');
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCurrencyAndUserDisplay);
+    </script>
+</body>
+</html>
