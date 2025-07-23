@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JOHNBLOX - Shop</title>
+    <style>
+        /* Shared CSS from previous files */
+        body { margin: 0; font-family: Verdana, Arial, sans-serif; background-color: #c9d4e4; color: #000; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background-color: #0074cc; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 8px rgba(0,0,0,0.2); flex-shrink: 0; }
+        .logo { height: 40px; }
+        .topbar-username { flex-grow: 1; text-align: center; font-weight: bold; font-size: 18px; color: #fff; }
+        .currency { display: flex; gap: 15px; font-size: 14px; }
+        .currency span, .currency a { color: #fff; text-decoration: none; font-weight: bold; }
+        .container { display: flex; flex-grow: 1; }
+        .sidebar { width: 220px; background-color: #dee7f6; padding: 20px; box-shadow: 2px 0 8px rgba(0,0,0,0.1); overflow-y: auto; flex-shrink: 0; }
+        .sidebar h2 { color: #003366; text-align: center; margin-bottom: 20px; font-size: 18px; }
+        .sidebar a { display: block; background: #0066cc; color: #fff; padding: 10px; margin: 8px 0; border-radius: 5px; text-decoration: none; text-align: center; font-weight: bold; transition: background 0.2s; }
+        .sidebar a:hover { background: #004c99; }
+        .main-content { flex-grow: 1; padding: 20px; background: #b3d1f0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .card { background-color: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); width: 100%; max-width: 600px; text-align: center; box-sizing: border-box; }
+        .card h1 { color: #0074cc; margin-top: 0; font-size: 28px; }
+        .card p { font-size: 1.1em; line-height: 1.6; }
+        .footer { text-align: center; margin-top: 40px; font-size: 14px; color: #333; padding: 20px; width: 100%; box-sizing: border-box; flex-shrink: 0; }
+        .footer a { color: #0066cc; text-decoration: none; font-weight: bold; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .container { flex-direction: column; } .sidebar { width: 100%; height: auto; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } .sidebar h2 { margin-bottom: 10px; } .sidebar a { margin: 5px 0; } .card { max-width: 100%; } }
+    </style>
+    <!-- Parse SDK CDN -->
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+</head>
+<body>
+    <header>
+        <img src="jogo.png" alt="JOHNBLOX Logo" class="logo">
+        <div class="topbar-username" id="topbar-username">Guest</div>
+        <div class="currency">
+            <span id="johnbux-display">Johnbux: 0</span>
+            <span id="jix-display">Jix: 0</span>
+            <a href="login.html" id="login-link">Login</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Navigation</h2>
+            <a href="index.html">Home</a>
+            <a href="games.html">Games</a>
+            <a href="studio.html">Studio</a>
+            <a href="shop.html">Shop</a>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <h1>Shop Page Coming Soon!</h1>
+                <p>Browse cool items and outfits for your avatar!</p>
+            </div>
+            <div class="footer">
+                <p>© 2025 JOHN.BLOX | <a href="https://discord.gg/KAN5euwyTj" target="_blank">Join Discord</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // *** BACK4APP KEYS (Copied from your dashboard image) ***
+        const APP_ID = 'UolRo1iE7vzgUI6J8OWGPrttMsCISDt4FrKtgfHWoCj';
+        const JS_KEY = 'UpgDbqfWwBHyj8saGbCwWcCR5QU3ngG0zBb4Zbu8UHm';
+
+        // Initialize Parse
+        Parse.initialize(APP_ID, JS_KEY);
+        Parse.serverURL = 'https://parseapi.back4app.com/'; 
+
+        let currentUser = Parse.User.current(); 
+
+        const topbarUsernameEl = document.getElementById('topbar-username');
+        const johnbuxDisplay = document.getElementById('johnbux-display');
+        const jixDisplay = document.getElementById('jix-display');
+        const loginLink = document.getElementById('login-link');
+        
+        async function updateCurrencyAndUserDisplay() {
+            currentUser = Parse.User.current(); 
+            if (currentUser) {
+                try {
+                    await currentUser.fetch(); 
+                    topbarUsernameEl.textContent = currentUser.get("username") || currentUser.get("email");
+                    loginLink.style.display = 'none';
+                    johnbuxDisplay.textContent = `Johnbux: ${currentUser.get("johnbux") || 0}`;
+                    jixDisplay.textContent = `Jix: ${currentUser.get("jix") || 0}`;
+                } catch (error) {
+                    console.error("Error fetching current user data:", error);
+                    logout();
+                }
+            } else {
+                topbarUsernameEl.textContent = 'Guest';
+                loginLink.style.display = 'inline';
+                johnbuxDisplay.textContent = 'Johnbux: 0';
+                jixDisplay.textContent = 'Jix: 0';
+            }
+        }
+
+        function logout() {
+            Parse.User.logOut().then(() => {
+                currentUser = null; 
+                localStorage.removeItem('johnblox_username'); 
+                updateCurrencyAndUserDisplay();
+                window.location.href = "login.html"; 
+            }).catch((error) => {
+                console.error("Error logging out:", error);
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCurrencyAndUserDisplay);
+    </script>
+</body>
+</html>
