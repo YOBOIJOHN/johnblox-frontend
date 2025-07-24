@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JohnBlox - Avatar Editor</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400&display=swap">
+    <style>
+        /* Shared Header/Base/Layout Styles (from index.html) */
+        body { font-family: 'Roboto', Verdana, Arial, sans-serif; background: linear-gradient(to right, #d3eafd 0%, #b8c6db 100%); margin: 0; color: #2d3748; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: #0074cc; color: #fff; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 3px 16px rgba(0,0,0,0.16); flex-shrink: 0; position: relative; }
+        .logo { height: 48px; margin-right: 20px; cursor: pointer; }
+        .site-title { display: none; } 
+        nav { margin-left: auto; display: flex; align-items: center; }
+        nav a { color: #fff; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 1.1em; transition: color 0.12s; }
+        nav a:hover { color: #ffdc52; }
+        /* Header Info & Currency for all pages */
+        .header-info-container { display: flex; align-items: center; gap: 20px; margin-left: auto; }
+        .header-username-display { font-weight: bold; font-size: 1.1em; color: #ffdc52; white-space: nowrap; }
+        .currency-display-header { display: flex; align-items: center; gap: 10px; font-size: 0.95em; font-weight: bold; color: #fff; }
+
+        .main-container { display: flex; flex-grow: 1; }
+        .sidebar { width: 220px; background-color: #dee7f6; padding: 20px; box-shadow: 2px 0 8px rgba(0,0,0,0.1); overflow-y: auto; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar h2 { color: #003366; text-align: center; margin-bottom: 20px; font-size: 18px; }
+        .sidebar a { display: block; background: #0066cc; color: #fff; padding: 10px; margin: 8px 0; border-radius: 5px; text-decoration: none; text-align: center; font-weight: bold; transition: background 0.2s; }
+        .sidebar a:hover { background: #004c99; }
+        .main-content { flex-grow: 1; padding: 20px; background: #b3d1f0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 30px; box-sizing: border-box; }
+        
+        /* Avatar Editor Specific Styles */
+        .avatar-editor-section {
+            background: #fff; max-width: 900px; width: 100%; margin-top: 30px; padding: 30px;
+            border-radius: 14px; box-shadow: 0 16px 48px rgba(0,0,0,0.13); text-align: center;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+        .avatar-editor-header { font-family: 'Orbitron', sans-serif; font-size: 2.2em; color: #0074cc; margin-bottom: 20px; }
+        
+        .editor-content { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 30px; }
+        
+        .avatar-preview-area {
+            position: relative;
+            width: 250px; /* Larger size for editor preview */
+            height: 250px;
+            border: 5px solid #000;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            flex-shrink: 0;
+            margin-bottom: 20px; /* Space below preview on small screens */
+        }
+        .avatar-preview-area img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensure parts fit without distortion */
+        }
+        /* Z-index for layering (higher numbers are on top) */
+        #avatar-body-img { z-index: 1; }
+        #avatar-head-img { z-index: 2; }
+        #avatar-face-img { z-index: 3; }
+        #avatar-shirt-img { z-index: 4; }
+        #avatar-hair-img { z-index: 5; }
+        #avatar-hat-img { z-index: 6; }
+
+
+        .customization-controls {
+            flex-grow: 1;
+            max-width: 450px; /* Max width for controls */
+            text-align: left;
+        }
+        .customization-controls h3 { color: #2d5bb5; margin-bottom: 15px; font-size: 1.5em; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .option-group { margin-bottom: 20px; }
+        .option-group label { display: block; font-weight: bold; margin-bottom: 10px; color: #2d5bb5; }
+        .option-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+        .option-buttons button {
+            background: #eef2f7; color: #2d3748; border: 1px solid #b4b4b4; border-radius: 5px;
+            padding: 8px 15px; cursor: pointer; font-size: 0.9em;
+            transition: background 0.16s, border-color 0.16s, transform 0.1s;
+        }
+        .option-buttons button.selected {
+            background: #0074cc; color: #fff; border-color: #0074cc;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .option-buttons button:hover:not(.selected) { background: #dbe4ef; border-color: #8d9faf; }
+
+        .save-button-row { margin-top: 30px; }
+        .save-button-row button {
+            background: #0074cc; color: #fff; border: none; border-radius: 5px; font-size: 1.1em;
+            padding: 12px 30px; cursor: pointer; font-weight: bold;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.09); transition: background 0.16s;
+        }
+        .save-button-row button:hover { background: #005fa3; }
+        #editor-message { margin-top: 15px; font-weight: bold; font-size: 1.1em; color: #e74c3c; }
+
+        .footer { text-align: center; margin-top: 40px; font-size: 14px; color: #333; padding: 20px; width: 100%; box-sizing: border-box; flex-shrink: 0; }
+        .footer a { color: #0066cc; text-decoration: none; font-weight: bold; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) { 
+            .main-container { flex-direction: column; } .sidebar { width: 100%; height: auto; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } .sidebar h2 { margin-bottom: 10px; } .sidebar a { margin: 5px 0; } .avatar-editor-section { max-width: 100%; } .editor-content { flex-direction: column; align-items: center; }
+        }
+        @media (max-width: 600px){ header { flex-direction: column; align-items: start; padding: 12px 10px;} .logo { height: 36px; margin-right: 10px; } .site-title { font-size: 1.5rem; } nav { margin-left: 0; width: 100%; justify-content: space-around; } nav a { margin: 0 5px; font-size: 0.9em; } .header-info-container { margin-left: 0; width: 100%; justify-content: center; margin-top: 10px; } .currency-display-header { font-size: 0.85em; } .main-content { padding: 15px; } .avatar-editor-section { padding: 15px; } }
+        @media (max-width: 480px) { .avatar-preview-area { width: 150px; height: 150px; } .customization-controls h3 { font-size: 1.2em; } .option-buttons button { padding: 6px 10px; font-size: 0.8em; } .save-button-row button { padding: 10px 20px; font-size: 1em; } }
+    </style>
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+</head>
+<body>
+    <header>
+        <img src="logo.png" class="logo" alt="JohnBlox Logo" onclick="window.location.href='index.html';">
+        <div class="site-title" style="display:none;">JohnBlox</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="games.html">Games</a>
+            <a href="shop.html">Shop</a>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <a href="login.html" id="login-nav-link" style="display:none;">Login</a>
+        </nav>
+        <div class="header-info-container">
+            <span id="topbar-username" class="header-username-display">Guest</span>
+            <div class="currency-display-header">
+                <span id="johnbux-display">Johnbux: 0</span> | 
+                <span id="jix-display">Jix: 0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Navigation</h2>
+            <a href="index.html">Home</a>
+            <a href="games.html">Games</a>
+            <a href="studio.html">Studio</a>
+            <a href="shop.html">Shop</a>
+            <a href="profile.html">Profile</a>
+            <a href="settings.html">Settings</a>
+            <a href="avatar_editor.html">Avatar Editor</a>
+        </div>
+
+        <div class="main-content">
+            <div class="avatar-editor-section">
+                <div class="avatar-editor-header">Customize Your Avatar</div>
+                <div class="editor-content">
+                    <div class="avatar-preview-area">
+                        <img src="body.png" id="avatar-body-img" alt="Body"
