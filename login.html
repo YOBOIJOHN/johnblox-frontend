@@ -21,6 +21,7 @@
     <!-- Parse SDK CDN -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
 <script src="parse-config.js"></script>
+<script src="parse-config.js"></script>
 </head>
 <body>
     <div class="login-container">
@@ -43,7 +44,6 @@
         const JS_KEY = 'UpgDbqfWwBHyj8saGbCwWcCR5QU3ngG0zBb4Zbu8UHm';
 
         // Initialize Parse
-        Parse.initialize(APP_ID, JS_KEY);
         Parse.serverURL = 'https://parseapi.back4app.com/'; 
 
         async function loginUser() {
