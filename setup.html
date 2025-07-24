@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOHNBLOX - Account Setup</title>
+    <title>JohnBlox - Account Setup</title>
     <style>
         /* Shared CSS from previous files */
         body { font-family: Verdana, Arial, sans-serif; background-color: #c9d4e4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #000; }
@@ -20,10 +21,11 @@
     </style>
     <!-- Parse SDK CDN -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+<script src="parse-config.js"></script>
 </head>
 <body>
     <div class="setup-container">
-        <h1>Create Your JOHNBLOX Account</h1>
+        <h1>Create Your JohnBlox Account</h1>
         <label for="username">Username:</label>
         <input type="text" id="username" placeholder="Choose a username" required>
 
@@ -73,9 +75,9 @@
                 // Simulate email sending after successful signup
                 console.log(`--- EMAIL SIMULATION START (from Frontend for Back4App) ---`);
                 console.log(`To: ${email}`);
-                console.log(`From: noreply@johnblox.com (Simulated)`);
-                console.log(`Subject: Welcome to JOHNBLOX!`);
-                console.log(`Body: Hello ${username},\n\nYour JOHNBLOX account has been successfully set up!`);
+                console.log(`From: noreply@JohnBlox.com (Simulated)`);
+                console.log(`Subject: Welcome to JohnBlox!`);
+                console.log(`Body: Hello ${username},\n\nYour JohnBlox account has been successfully set up!`);
                 console.log(`--- EMAIL SIMULATION END ---`);
                 // For real email via Back4App, you'd use SendGrid integrated with their Cloud Code.
 

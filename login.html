@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login to JOHNBLOX</title>
+    <title>Login to JohnBlox</title>
     <style>
         /* Shared CSS from previous files */
         body { font-family: Verdana, Arial, sans-serif; background-color: #c9d4e4; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: #000; }
@@ -19,10 +20,11 @@
     </style>
     <!-- Parse SDK CDN -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+<script src="parse-config.js"></script>
 </head>
 <body>
     <div class="login-container">
-        <h1>Login to JOHNBLOX</h1>
+        <h1>Login to JohnBlox</h1>
         <!-- Parse User Auth uses Username or Email -->
         <label for="username_or_email">Username or Email:</label>
         <input type="text" id="username_or_email" placeholder="Your username or email" required>
@@ -53,7 +55,7 @@
                 const user = await Parse.User.logIn(usernameOrEmail, password);
                 
                 // Store username (optional, for convenience in UI)
-                localStorage.setItem('johnblox_username', user.get("username") || user.get("email"));
+                localStorage.setItem('JohnBlox_username', user.get("username") || user.get("email"));
                 
                 messageEl.textContent = "Login successful! Redirecting...";
                 messageEl.style.color = "green";

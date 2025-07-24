@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOHNBLOX - Home</title>
+    <title>JohnBlox - Home</title>
     <style>
         /* Base Styles */
         body {
@@ -277,10 +278,11 @@
     </style>
     <!-- Parse SDK CDN -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+<script src="parse-config.js"></script>
 </head>
 <body>
     <header>
-        <img src="jogo.png" alt="JOHNBLOX Logo" class="logo">
+        <img src="jogo.png" alt="JohnBlox Logo" class="logo">
         <div class="topbar-username" id="topbar-username">Guest</div>
         <div class="currency">
             <span id="johnbux-display">Johnbux: 0</span>
@@ -412,7 +414,7 @@
         function logout() {
             Parse.User.logOut().then(() => {
                 currentUser = null; // Clear local reference
-                localStorage.removeItem('johnblox_username'); // Clear from local storage (if stored for convenience)
+                localStorage.removeItem('JohnBlox_username'); // Clear from local storage (if stored for convenience)
                 updateCurrencyAndUserDisplay();
                 window.location.href = "login.html"; // Redirect to login page
             }).catch((error) => {

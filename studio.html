@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOHNBLOX - Studio</title>
+    <title>JohnBlox - Studio</title>
     <style>
         /* Shared CSS from previous files */
         body { margin: 0; font-family: Verdana, Arial, sans-serif; background-color: #c9d4e4; color: #000; min-height: 100vh; display: flex; flex-direction: column; }
@@ -28,10 +29,11 @@
     </style>
     <!-- Parse SDK CDN -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+<script src="parse-config.js"></script>
 </head>
 <body>
     <header>
-        <img src="jogo.png" alt="JOHNBLOX Logo" class="logo">
+        <img src="jogo.png" alt="JohnBlox Logo" class="logo">
         <div class="topbar-username" id="topbar-username">Guest</div>
         <div class="currency">
             <span id="johnbux-display">Johnbux: 0</span>
@@ -54,7 +56,7 @@
         <div class="main-content">
             <div class="card">
                 <h1>Studio Page Coming Soon!</h1>
-                <p>Get ready to create your own JOHNBLOX masterpieces!</p>
+                <p>Get ready to create your own JohnBlox masterpieces!</p>
             </div>
             <div class="footer">
                 <p>© 2025 JOHN.BLOX | <a href="https://discord.gg/KAN5euwyTj" target="_blank">Join Discord</a></p>
@@ -102,7 +104,7 @@
         function logout() {
             Parse.User.logOut().then(() => {
                 currentUser = null; 
-                localStorage.removeItem('johnblox_username'); 
+                localStorage.removeItem('JohnBlox_username'); 
                 updateCurrencyAndUserDisplay();
                 window.location.href = "login.html"; 
             }).catch((error) => {
