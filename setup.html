@@ -10,24 +10,51 @@
         body {
             font-family: 'Roboto', Verdana, Arial, sans-serif;
             background: linear-gradient(to right, #d3eafd 0%, #b8c6db 100%);
-            margin: 0; min-height: 100vh; color: #2d3748;
+            margin: 0; 
+            min-height: 100vh; 
+            color: #2d3748;
+            display: flex;
+            flex-direction: column;
         }
         header {
             background: #0074cc;
-            color: #fff; padding: 16px 32px;
-            display: flex; align-items: center; box-shadow: 0 3px 16px rgba(0,0,0,0.16);
+            color: #fff; 
+            padding: 16px 32px;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            box-shadow: 0 3px 16px rgba(0,0,0,0.16);
+            flex-shrink: 0;
+            position: relative;
         }
         .logo { height: 48px; margin-right: 20px; cursor: pointer; }
-        .site-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; margin-right: 40px; }
-        nav { margin-left: auto; }
+        .site-title { display: none; } 
+        nav { margin-left: auto; display: flex; align-items: center; }
         nav a {
             color: #fff; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 1.1em;
             transition: color 0.12s;
         }
         nav a:hover { color: #ffdc52; }
+        /* Header Info & Currency for Login/Setup Pages (not dynamic currency) */
+        .currency-display-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95em;
+            font-weight: bold;
+            color: #fff;
+            position: absolute; 
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
         .signup-container {
             background: #fff; max-width: 400px; margin: 56px auto 0 auto; padding: 38px 36px 32px 36px;
             border-radius: 14px; box-shadow: 0 16px 48px rgba(0,0,0,0.13); text-align: center;
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
         }
         .signup-header { font-size: 2em; color: #0074cc; font-family:'Orbitron'; margin-bottom: 18px; }
         label { display: block; text-align:left; color:#2d5bb5; font-weight:bold; margin-bottom:7px;}
@@ -41,24 +68,40 @@
             box-shadow: 0 4px 14px rgba(0,0,0,0.09); transition: background 0.16s;
         }
         button:hover { background: #005fa3; }
-        #signup-message { margin-top: 6px; color: #e74c3c; font-size:1.1em; }
+        #signup-message { margin-top: 18px; color: #e74c3c; font-size:1.1em; } 
         .login-link { margin-top:18px; font-size:1em; }
         .login-link a { color:#0074cc; text-decoration:underline;}
+        @media (max-width: 600px){
+            .signup-container { padding:18px 5vw; margin-top: 30px; }
+            header { flex-direction: column; align-items: start; padding: 12px 10px;}
+            .site-title { margin-right: 0; margin-bottom: 10px; }
+            nav { margin-left: 0; width: 100%; justify-content: space-around; }
+            nav a { margin: 0 5px; font-size: 0.9em; }
+            .currency-display-header { position: static; transform: none; margin-top: 10px; width: 100%; justify-content: center; } 
+        }
+        @media (max-width: 480px) { 
+            header { padding: 10px 15px; } .logo { height: 36px; margin-right: 10px; } .site-title { font-size: 1.5rem; } .signup-container { padding: 15px; }
+        }
     </style>
+    <!-- Parse SDK CDN -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-    <script src="parse-config.js"></script>
 </head>
 <body>
     <header>
         <img src="logo.png" class="logo" alt="JohnBlox Logo" onclick="window.location.href='index.html';">
-        <div class="site-title">JohnBlox</div>
+        <div class="site-title" style="display:none;">JohnBlox</div>
         <nav>
             <a href="index.html">Home</a>
             <a href="games.html">Games</a>
             <a href="shop.html">Shop</a>
             <a href="profile.html">Profile</a>
             <a href="settings.html">Settings</a>
+            <a href="login.html" id="login-nav-link">Login</a>
         </nav>
+        <div class="currency-display-header">
+            <span>Johnbux: 0</span> | 
+            <span>Jix: 0</span>
+        </div>
     </header>
     <div class="signup-container">
         <div class="signup-header">Create Your JohnBlox Account</div>
@@ -79,39 +122,59 @@
         <div id="signup-message"></div>
     </div>
     <script>
-      async function completeSetup(e){
-        e.preventDefault();
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value;
-        const email = document.getElementById('email').value.trim();
-        const birthday = document.getElementById('birthday').value;
-        const msg = document.getElementById('signup-message');
-        msg.style.color = "#e74c3c";
-        msg.textContent = 'Working...';
+        // *** BACK4APP KEYS (Copied from your dashboard image) ***
+        const APP_ID = 'UolRo1iE7vzgUI6J8OWGPrttMsCISDt4FrKtgfHWoCj'; 
+        const JS_KEY = 'UpgDbqfWwBHyj8saGbCwWcCR5QU3ngG0zBb4Zbu8UHm'; 
 
-        try {
-            const user = new Parse.User();
-            user.set("username", username);
-            user.set("password", password);
-            user.set("email", email);
-            user.set("birthday", birthday || null);
-            user.set("johnbux", 0);
-            user.set("jix", 0);
-            await user.signUp();
-            msg.style.color = "#27ae60";
-            msg.textContent = "Account created! Redirecting to login...";
-            setTimeout(() => { window.location.href = "login.html"; }, 1300);
-        } catch (error) {
-            if (error.code === 202 || error.code === 203) {
-                msg.textContent = "That username or email is already registered.";
-            } else if(error.code === 125){
-                msg.textContent = "Invalid email address.";
-            } else {
-                msg.textContent = "Signup failed: " + (error.message || error);
+        // Initialize Parse
+        Parse.initialize(APP_ID, JS_KEY);
+        Parse.serverURL = 'https://parseapi.back4app.com/'; 
+
+        async function completeSetup(e){
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const birthday = document.getElementById('birthday').value;
+            const msg = document.getElementById('signup-message');
+            msg.style.color = "#e74c3c"; 
+            msg.textContent = 'Working...';
+
+            try {
+                const user = new Parse.User();
+                user.set("username", username);
+                user.set("password", password);
+                user.set("email", email);
+                user.set("birthday", birthday || null);
+                user.set("johnbux", 0); 
+                user.set("jix", 0);     
+                await user.signUp(); 
+
+                console.log(`--- EMAIL SIMULATION START (from Frontend for Back4App) ---`);
+                console.log(`To: ${email}`);
+                console.log(`From: noreply@johnblox.com (Simulated)`);
+                console.log(`Subject: Welcome to JOHNBLOX!`);
+                console.log(`Body: Hello ${username},\n\nYour JOHNBLOX account has been successfully set up!`);
+                console.log(`--- EMAIL SIMULATION END ---`);
+                
+                msg.style.color = "#27ae60"; 
+                msg.textContent = "Account created! Redirecting to login...";
+                setTimeout(() => { window.location.href = "login.html"; }, 1300); 
+            } catch (error) {
+                console.error("Signup failed:", error.message);
+                let errorMessage = error.message;
+                if (error.code === 202) { 
+                    errorMessage = "That username or email is already registered.";
+                } else if(error.code === 125){ 
+                    errorMessage = "Invalid email address format.";
+                } else {
+                    errorMessage = "Signup failed: " + (error.message || error);
+                }
+                msg.textContent = `Signup failed: ${errorMessage}`;
+                msg.style.color = "red";
             }
+            return false; 
         }
-        return false;
-      }
     </script>
 </body>
 </html>
