@@ -1,392 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JohnBlox - Home</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Orbitron:700|Roboto:400&display=swap">
+    <title>SimpleBlox - ComicSans Logged Out (Home)</title>
     <style>
-        /* Base Styles */
-        body { font-family: 'Roboto', Verdana, Arial, sans-serif; background: linear-gradient(to right, #d3eafd 0%, #b8c6db 100%); margin: 0; color: #2d3748; min-height: 100vh; display: flex; flex-direction: column; }
-        header { background: #0074cc; color: #fff; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 3px 16px rgba(0,0,0,0.16); flex-shrink: 0; position: relative; }
-        .logo { height: 40px; margin-right: 15px; cursor: pointer; } 
-        .site-title { display: none; } 
+        /* Base Styles - Blue/Light Edition */
+        body {
+            margin: 0;
+            /* FONT IS COMIC SANS MS! */
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive; 
+            background-color: #c9d4e4; /* Light Blue/Gray Background */
+            color: #000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 55px; /* Space for fixed header */
+        }
         
-        /* New placement for currency and username in header */
-        .header-info-container {
+        /* General Blocky Elements */
+        * {
+            border-radius: 0 !important; /* Enforce blocky look */
+            box-sizing: border-box;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #0074cc; /* Header Blue */
+            color: #fff;
+            padding: 8px 20px; 
             display: flex;
             align-items: center;
-            gap: 20px; 
-            margin-left: auto; 
+            justify-content: space-between;
+            border-bottom: 2px solid #005a9c; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
         }
-        .header-username-display {
+
+        /* Logo Area (JOHNBLOX / JOHNBLOC TEST) */
+        #site-name {
+            font-size: 28px; 
             font-weight: bold;
-            font-size: 1.1em;
-            color: #ffdc52; 
-            white-space: nowrap;
+            text-shadow: 1px 1px 0 #000;
+            color: #fff; 
         }
-        .currency-display-header {
+        .logo {
+            height: 35px; 
+            border: none !important;
+        }
+
+        /* Header Navigation */
+        #header-nav {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.95em;
+            gap: 15px; /* Tighter gap for more items */
+            flex-grow: 1; 
+            justify-content: center;
+            margin: 0 10px;
+        }
+
+        .nav-item {
+            color: #fff;
+            text-decoration: none;
             font-weight: bold;
+            font-size: 14px; /* Slightly smaller for space */
+            cursor: pointer; 
+            padding: 5px 10px;
+            border: 1px solid transparent;
+        }
+        
+        .active-nav-item {
+            background-color: #005a9c; /* Darker blue for active tab */
+            border: 1px solid #005a9c;
             color: #fff;
         }
-        .currency-display-header a { color: #fff; text-decoration: none; transition: color 0.12s; }
-        .currency-display-header a:hover { color: #ffdc52; }
+        
+        /* AUTH Links (Logged Out State) */
+        .auth-links {
+            display: flex;
+            gap: 10px;
+        }
+        .auth-links .nav-item {
+            font-size: 16px;
+            padding: 5px 12px;
+            box-shadow: 1px 1px 0 #000;
+        }
+        .auth-links .nav-item:first-child { /* Sign In */
+            background-color: #ff9900 !important;
+            color: #1c2530 !important;
+            border: 1px solid #cc7a00 !important;
+        }
+        .auth-links .nav-item:last-child { /* Sign Up */
+            background-color: #005a9c !important;
+            color: #fff !important;
+            border: 1px solid #0044cc !important;
+        }
+
 
         /* Main Container Layout */
-        .main-container { display: flex; flex-grow: 1; }
-        .sidebar { width: 220px; background-color: #dee7f6; padding: 20px; box-shadow: 2px 0 8px rgba(0,0,0,0.1); overflow-y: auto; flex-shrink: 0; display: flex; flex-direction: column; }
-        .sidebar h2 { color: #003366; text-align: center; margin-bottom: 20px; font-size: 18px; }
-        .sidebar a { display: block; background: #0066cc; color: #fff; padding: 10px; margin: 8px 0; border-radius: 5px; text-decoration: none; text-align: center; font-weight: bold; transition: background 0.2s; }
-        .sidebar a:hover { background: #004c99; }
-        .main-content { flex-grow: 1; padding: 20px; background: #b3d1f0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 30px; box-sizing: border-box; }
+        #app-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #b3d1f0; /* Main Content Blue */
+            padding: 20px;
+            border: 1px solid #88aacc;
+            box-shadow: 3px 3px 0 #88aacc;
+            flex-grow: 1;
+            width: 95%;
+        }
         
-        /* Profile Section (Avatar & Greeting) */
-        .profile-section { display: flex; align-items: center; gap: 20px; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); width: 100%; max-width: 800px; box-sizing: border-box; }
-        .profile-avatar { position: relative; width: 100px; height: 100px; border-radius: 50%; border: 3px solid #000; overflow: hidden; flex-shrink: 0; }
-        .profile-avatar img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; } /* Use contain for layered images */
-        .greeting { font-size: 24px; font-weight: bold; color: #000; }
-
-        /* Recommend Section */
-        .recommend { width: 100%; max-width: 800px; text-align: center; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); box-sizing: border-box; }
-        .recommend h2 { font-size: 20px; color: #000; margin-bottom: 15px; }
-        .games-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .game-card { width: 180px; height: 180px; background: #fff; border: 4px solid #000; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); flex-shrink: 0; }
-        .game-card img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* Test Currency Actions Section */
-        .currency-actions { background-color: #ffffff; color: #333; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 600px; width: 100%; text-align: center; box-sizing: border-box; }
-        .currency-actions h2 { color: #0074cc; margin-bottom: 20px; }
-        .currency-actions button { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.2s; margin: 5px; }
-        .currency-actions button:hover { background-color: #218838; }
-        
-        /* Message Area for Feedback */
-        #message-area { margin-top: 20px; padding: 10px; background-color: #ffe0b2; border: 1px solid #ffb74d; border-radius: 5px; color: #333; display: none; width: 100%; max-width: 600px; text-align: left; box-sizing: border-box; }
-
-        /* Footer Styles */
-        .footer { text-align: center; margin-top: 40px; font-size: 14px; color: #333; padding: 20px; width: 100%; box-sizing: border-box; flex-shrink: 0; }
-        .footer a { color: #0066cc; text-decoration: none; font-weight: bold; }
-        .footer a:hover { text-decoration: underline; }
-
-        /* 3D Canvas (still on homepage) */
-        #threejs-canvas {
-            width: 100%;
-            height: 400px;
-            display: block;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        /* Content Box Styling (Tiles/Panels) */
+        .game-tile {
+            border: 1px solid #0044cc; 
+            box-shadow: 2px 2px 0 #00000030;
+            padding: 15px;
             margin-bottom: 20px;
-            background-color: #f0f0f0;
+            background-color: #fff; /* White contrast inside */
+            color: #1c2530; /* Dark text inside boxes */
+        }
+        .game-tile img {
+            border: 1px solid #ccc;
         }
         
-        /* Responsive adjustments */
-        @media (max-width: 768px) { 
-            .main-container { flex-direction: column; } 
-            .sidebar { width: 100%; height: auto; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); } 
-            .sidebar h2 { margin-bottom: 10px; } 
-            .sidebar a { margin: 5px 0; } 
-            .profile-section, .recommend, .currency-actions { max-width: 100%; } 
-            .profile-section { flex-direction: column; text-align: center; } 
-            .games-grid { flex-direction: column; align-items: center; } 
-            .game-card { width: 250px; height: 250px; }
-            .header-info-container { margin-left: 0; width: 100%; justify-content: center; margin-top: 10px; }
+        h1, h2, h3 {
+            color: #0044cc; /* Blue accents for titles */
+            border-bottom: 2px solid #0044cc;
+            padding-bottom: 5px;
         }
-        @media (max-width: 480px) { 
-            header { flex-direction: column; align-items: start; padding: 12px 10px;} 
-            .logo { height: 36px; margin-right: 10px; } 
-            .header-info-container { flex-direction: column; align-items: flex-start; gap: 5px; } 
-            .currency-display-header { font-size: 0.85em; }
-            .main-content { padding: 15px; } 
-            .profile-section, .recommend, .currency-actions { padding: 15px; } 
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        /* Button Styling - Standard Blue */
+        button {
+            background-color: #0074cc !important;
+            color: #fff !important;
+            border: 1px solid #0044cc !important;
+            padding: 6px 12px !important;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 1px 1px 0 #000;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005a9c !important;
+        }
+        
+        /* Featured Banner - Alert Style */
+        .featured-banner {
+            border: 2px solid #ff0000;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #ffe0e0;
+            color: #000;
+            text-align: center;
+        }
+        .featured-banner h1 {
+            color: #ff0000;
+            text-shadow: none;
+            border-bottom: 2px solid #ff0000;
+        }
+
+        /* Footer Styles (Custom) */
+        #footer {
+            background-color: #e0e6ed; 
+            color: #555;
+            padding: 15px 20px;
+            font-size: 12px;
+            text-align: center;
+            border-top: 1px solid #b0b0b0;
+            margin-top: auto; 
+            flex-shrink: 0;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+        }
+        #footer a {
+            color: #0074cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Media Query Cleanup */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding-bottom: 10px;
+            }
+            #header-nav {
+                justify-content: space-around;
+                width: 100%;
+                margin: 5px 0;
+                order: 2; /* Move main nav below logo on mobile */
+            }
+            .auth-links {
+                order: 3;
+                width: 100%;
+                justify-content: space-around;
+            }
+            .auth-links .nav-item {
+                 flex-grow: 1;
+                 text-align: center;
+            }
+            #logo-area {
+                order: 1;
+                margin-bottom: 5px;
+            }
+            body {
+                padding-top: 130px; /* Adjust padding for expanded header on mobile */
+            }
         }
     </style>
-    <!-- Parse SDK CDN -->
-    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-    <!-- Three.js CDN for 3D Graphics (only for index.html) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/controls/OrbitControls.js"></script>
 </head>
 <body>
+
+    <!-- 1. Top Navigation Bar (Header) - LOGGED OUT STATE -->
     <header>
-        <img src="logo.png" class="logo" alt="JohnBlox Logo" onclick="window.location.href='index.html';">
-        <div class="site-title" style="display:none;">JohnBlox</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="games.html">Games</a>
-            <a href="shop.html">Shop</a>
-            <a href="profile.html">Profile</a>
-            <a href="settings.html">Settings</a>
-            <a href="login.html" id="login-nav-link">Login</a> 
+        <!-- LOGO AREA with Fallback Logic -->
+        <div id="logo-area" style="display: flex; align-items: center; gap: 5px; color: #fff;">
+            <!-- 
+                UPDATED: If jogo.png fails to load, the onerror only hides the image, 
+                it no longer changes the text, so it stays "JOHNBLOX".
+            -->
+            <img src="jogo.png" alt="JOHNBLOX Logo" class="logo" id="site-logo"
+                onerror="this.style.display='none';">
+            <span id="site-name">JOHNBLOX</span>
+        </div>
+
+        <nav id="header-nav">
+            <!-- Navigation Links are now physical ANCHOR tags -->
+            <a class="nav-item active-nav-item" href="index.html">Home</a>
+            <a class="nav-item" href="games.html">Games</a>
+            <a class="nav-item" href="develop.html">Develop</a>
+            <a class="nav-item" href="shop.html">Shop</a>
+            <a class="nav-item" href="profile.html">Profile</a>
+            <a class="nav-item" href="settings.html">Settings</a>
         </nav>
-        <div class="header-info-container">
-            <span id="topbar-username" class="header-username-display">Guest</span>
-            <div class="currency-display-header">
-                <span id="johnbux-display">Johnbux: 0</span> | 
-                <span id="jix-display">Jix: 0</span>
-            </div>
+        
+        <!-- AUTH LINKS (Replaces Currency/User Display) -->
+        <div class="auth-links">
+            <a class="nav-item" href="signin.html">Sign In</a>
+            <a class="nav-item" href="signup.html">Sign Up</a>
         </div>
     </header>
 
-    <div class="main-container">
-        <div class="sidebar">
-            <h2>Navigation</h2>
-            <a href="index.html">Home</a>
-            <a href="games.html">Games</a>
-            <a href="studio.html">Studio</a>
-            <a href="shop.html">Shop</a>
-            <a href="profile.html">Profile</a>
-            <a href="settings.html">Settings</a>
-            <a href="avatar_editor.html">Avatar Editor</a> <!-- NEW: Avatar Editor Link -->
-        </div>
-
-        <div class="main-content">
-            <div class="profile-section">
-                <div class="profile-avatar">
-                    <img src="body.png" id="avatar-body-img-home" alt="Body" style="z-index: 1;">
-                    <img src="head.png" id="avatar-head-img-home" alt="Head" style="z-index: 2;">
-                    <img src="default_face.png" id="avatar-face-img-home" alt="Face" style="z-index: 3;"> 
-                    <img src="" id="avatar-shirt-img-home" alt="Shirt" style="z-index: 4;">
-                    <img src="" id="avatar-hair-img-home" alt="Hair" style="z-index: 5;">
-                    <img src="" id="avatar-hat-img-home" alt="Hat" style="z-index: 6;">
-                </div>
-                <div class="greeting" id="greeting-text">Hello Guest</div>
-            </div>
-
-            <!-- 3D Canvas for homepage -->
-            <canvas id="threejs-canvas"></canvas>
-
-            <div class="recommend">
-                <h2>Recommended Games</h2>
-                <div class="games-grid">
-                    <div class="game-card"><img src="recommended_game_1.png" alt="Game 1"></div>
-                    <div class="game-card"><img src="recommended_game_2.png" alt="Game 2"></div>
-                </div>
-            </div>
-
-            <div class="currency-actions">
-                <h2>Test Currency Actions</h2>
-                <p>Click these buttons to simulate earning/spending currency.</p>
-                <button class="action-button" onclick="earnJohnbux(10)">Earn 10 Johnbux</button>
-                <button class="action-button" onclick="spendJohnbux(5)">Spend 5 Johnbux</button>
-            </div>
-
-            <div id="message-area"></div>
+    <div id="app-container">
+        <div id="main-layout">
             
-            <div class="footer">
-                <p>© 2025 JOHN.BLOX | <a href="https://discord.gg/KAN5euwyTj" target="_blank">Join Discord</a></p>
+            <!-- Main Content Display (STATIC HOME PAGE) -->
+            <div id="main-content">
+                <div>
+                    <!-- Featured Banner -->
+                    <div class="featured-banner">
+                        <h1>ALERT: LOG IN TO ACCESS ALL FEATURES!</h1>
+                        <p style="margin-top: 5px;">Join the JOHNBLOX community to play, create, and chat.</p>
+                        <!-- Updated to use actual href -->
+                        <button onclick="window.location.href='signup.html'" style="background-color: #ff0000 !important; color: #fff !important;">Sign Up Now</button>
+                    </div>
+
+                    <!-- Popular Games Section -->
+                    <div class="game-section">
+                        <h2>// Popular Games (Logged Out View)</h2>
+                        <div class="game-grid">
+                            <!-- Game Tile 1 -->
+                            <div class="game-tile">
+                                <img src="https://placehold.co/200x112/cccccc/333333?text=OBBY+UNIT" alt="Mega Obby World" style="width: 100%;">
+                                <p style="font-weight: bold; margin: 5px 0 2px 0;">Mega Obby World</p>
+                                <p style="font-size: 14px; margin: 0; color: #666;">P-Count: 3.5K | Rating: 92%</p>
+                                <button onclick="window.location.href='signin.html'">Play Game</button>
+                            </div>
+                            <!-- Game Tile 2 -->
+                            <div class="game-tile">
+                                <img src="https://placehold.co/200x112/dddddd/333333?text=TYCOON+V2" alt="Flipping Tycoon 2" style="width: 100%;">
+                                <p style="font-weight: bold; margin: 5px 0 2px 0;">Flipping Tycoon 2</p>
+                                <p style="font-size: 14px; margin: 0; color: #666;">P-Count: 1.2K | Rating: 88%</p>
+                                <button onclick="window.location.href='signin.html'">Play Game</button>
+                            </div>
+                            <!-- Game Tile 3 -->
+                            <div class="game-tile">
+                                <img src="https://placehold.co/200x112/bbbbbb/333333?text=DEFENSE+GRID" alt="Tower Defense X" style="width: 100%;">
+                                <p style="font-weight: bold; margin: 5px 0 2px 0;">Tower Defense X</p>
+                                <p style="font-size: 14px; margin: 0; color: #666;">P-Count: 6.1K | Rating: 95%</p>
+                                <button onclick="window.location.href='signin.html'">Play Game</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Guest Mode Section -->
+                    <div class="game-tile" style="background-color: #e0e6ed; color: #1c2530; text-align: center;">
+                        <h2 style="color: #0044cc; border-color: #1c2530;">Guest Mode Activated</h2>
+                        <p>You are browsing as a guest. <button onclick="window.location.href='signin.html'">Log In</button> to secure your data.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- 2. Custom Footer -->
+    <footer id="footer">
+        <p style="margin: 0 0 5px 0; font-weight: bold; color: #0074cc;">Join our Discord!</p>
+        <p style="margin: 0 0 5px 0;">Thank you for being a part of the JOHNBLOX community!</p>
+        <!-- UPDATED DISCORD LINK -->
+        <p style="margin: 0; color: #777;">&copy; 2025 JOHN.BLOX | <a href="https://discord.gg/ZM4AqXHmgy" style="color: #0074cc; text-decoration: none;" target="_blank">Join Discord</a></p>
+    </footer>
     <script>
-        // *** BACK4APP KEYS (Copied from your dashboard image) ***
-        const APP_ID = 'UolRo1iE7vzgUI6J8OWGPrttMsCISDt4FrKtgfHWoCj'; 
-        const JS_KEY = 'UpgDbqfWwBHyj8saGbCwWcCR5QU3ngG0zBb4Zbu8UHm'; 
-
-        // Initialize Parse
-        Parse.initialize(APP_ID, JS_KEY);
-        Parse.serverURL = 'https://parseapi.back4app.com/'; 
-
-        let currentUser = Parse.User.current(); 
-
-        // Header Elements
-        const topbarUsernameEl = document.getElementById('topbar-username');
-        const johnbuxDisplay = document.getElementById('johnbux-display');
-        const jixDisplay = document.getElementById('jix-display');
-        const loginNavLink = document.getElementById('login-nav-link'); 
-        
-        // Page specific elements
-        const greetingTextEl = document.getElementById('greeting-text');
-        const messageArea = document.getElementById('message-area');
-
-        // Avatar Preview Elements on Homepage (IDs added in HTML)
-        const avatarBodyImgHome = document.getElementById('avatar-body-img-home');
-        const avatarHeadImgHome = document.getElementById('avatar-head-img-home');
-        const avatarFaceImgHome = document.getElementById('avatar-face-img-home');
-        const avatarShirtImgHome = document.getElementById('avatar-shirt-img-home');
-        const avatarHairImgHome = document.getElementById('avatar-hair-img-home');
-        const avatarHatImgHome = document.getElementById('avatar-hat-img-home');
-
-
-        // All possible avatar parts and their image paths (must match avatar_editor.html)
-        const avatarPartsConfig = {
-            body: 'body.png', 
-            head: 'head.png', 
-            face: { 'default': 'default_face.png' }, // Face is now customizable
-            shirt: { 'red': 'red_shirt.png', 'girl': 'girl_shirt.png', 'boy': 'boy_shirt.png' }, 
-            hair: { 'girl': 'girl_hair.png', 'boy': 'boy_hair.png', 'spiky': 'spikey_hair.png' }, 
-            hat: { 'cap': 'red_hat.png' } 
+        // Minimal script remains to handle the image fallback logic for the logo
+        window.onload = () => {
+             // Logic to check if the current page is 'index.html' and set active class (for consistency)
+             document.querySelector('a[href="index.html"]').classList.add('active-nav-item');
         };
-
-        function showMessage(msg, type = 'info') {
-            messageArea.textContent = msg;
-            messageArea.style.display = 'block';
-            messageArea.style.backgroundColor = type === 'error' ? '#ffe0e0' : '#e0ffe0';
-            messageArea.style.borderColor = type === 'error' ? '#ff9999' : '#99ff99';
-            messageArea.style.color = type === 'error' ? '#d9534f' : '#28a745';
-            setTimeout(() => { messageArea.style.display = 'none'; }, 5000);
-        }
-
-        async function updateNavAndUserDisplay() {
-            currentUser = Parse.User.current(); 
-            if (currentUser) {
-                try {
-                    await currentUser.fetch(); 
-                    topbarUsernameEl.textContent = currentUser.get("username") || currentUser.get("email");
-                    greetingTextEl.textContent = `Hello ${topbarUsernameEl.textContent}`;
-                    loginNavLink.style.display = 'none'; 
-                    johnbuxDisplay.textContent = `Johnbux: ${currentUser.get("johnbux") || 0}`;
-                    jixDisplay.textContent = `Jix: ${currentUser.get("jix") || 0}`;
-                    loadAndDisplayAvatar(currentUser, 'home'); // Load avatar for homepage
-                } catch (error) {
-                    console.error("Error fetching current user data for nav:", error);
-                    loginNavLink.style.display = 'inline';
-                    if (Parse.User.current()) { 
-                       logout(); 
-                    }
-                }
-            } else {
-                topbarUsernameEl.textContent = 'Guest';
-                greetingTextEl.textContent = 'Hello Guest';
-                loginNavLink.style.display = 'inline'; 
-                johnbuxDisplay.textContent = 'Johnbux: 0';
-                jixDisplay.textContent = 'Jix: 0';
-                loadAndDisplayAvatar(null, 'home'); // Show default avatar if not logged in
-            }
-        }
-
-        // Function to load and display avatar on pages (index and profile)
-        function loadAndDisplayAvatar(user, pageType) {
-            let config = { 
-                body: avatarPartsConfig.body, 
-                head: avatarPartsConfig.head, 
-                face: avatarPartsConfig.face.default, // Default face
-                shirt: '', 
-                hair: '', 
-                hat: '' 
-            }; 
-
-            if (user && user.get('avatarConfig')) {
-                const savedConfig = user.get('avatarConfig');
-                // Merge saved config, but validate image paths against avatarPartsConfig
-                if (savedConfig.body && savedConfig.body === avatarPartsConfig.body) config.body = savedConfig.body;
-                if (savedConfig.head && savedConfig.head === avatarPartsConfig.head) config.head = savedConfig.head;
-                if (savedConfig.face && avatarPartsConfig.face[Object.keys(avatarPartsConfig.face).find(key => avatarPartsConfig.face[key] === savedConfig.face)]) { 
-                    config.face = savedConfig.face;
-                }
-
-                if (savedConfig.shirt && avatarPartsConfig.shirt[Object.keys(avatarPartsConfig.shirt).find(key => avatarPartsConfig.shirt[key] === savedConfig.shirt)]) {
-                    config.shirt = savedConfig.shirt;
-                }
-                if (savedConfig.hair && avatarPartsConfig.hair[Object.keys(avatarPartsConfig.hair).find(key => avatarPartsConfig.hair[key] === savedConfig.hair)]) { 
-                    config.hair = savedConfig.hair;
-                }
-                if (savedConfig.hat && avatarPartsConfig.hat[Object.keys(avatarPartsConfig.hat).find(key => avatarPartsConfig.hat[key] === savedConfig.hat)]) { 
-                    config.hat = savedConfig.hat;
-                }
-            }
-
-            // Select correct image elements based on pageType
-            let bodyImg, headImg, faceImg, shirtImg, hairImg, hatImg;
-            if (pageType === 'home') {
-                bodyImg = avatarBodyImgHome;
-                headImg = avatarHeadImgHome;
-                faceImg = avatarFaceImgHome;
-                shirtImg = avatarShirtImgHome;
-                hairImg = avatarHairImgHome;
-                hatImg = avatarHatImgHome;
-            } else if (pageType === 'profile') {
-                // These are handled by profile.html's own script
-            }
-
-            if (bodyImg) bodyImg.src = config.body;
-            if (headImg) headImg.src = config.head;
-            if (faceImg) faceImg.src = config.face;
-            if (shirtImg) shirtImg.src = config.shirt || '';
-            if (hairImg) hairImg.src = config.hair || '';
-            if (hatImg) hatImg.src = config.hat || '';
-        }
-
-        async function earnJohnbux(amount) {
-            if (!Parse.User.current()) { showMessage("Please log in to earn Johnbux.", 'error'); return; }
-            try {
-                const result = await Parse.Cloud.run("earnJohnbux", { amount: amount });
-                showMessage(result.message, 'info');
-                await updateNavAndCurrency(); 
-            } catch (error) {
-                console.error("Error calling earnJohnbux Cloud Function:", error);
-                showMessage(`Error earning Johnbux: ${error.message}`, 'error');
-            }
-        }
-
-        async function spendJohnbux(amount) {
-            if (!Parse.User.current()) { showMessage("Please log in to spend Johnbux.", 'error'); return; }
-            try {
-                const result = await Parse.Cloud.run("spendJohnbux", { amount: amount });
-                showMessage(result.message, 'info');
-                await updateNavAndCurrency(); 
-            } catch (error) {
-                console.error("Error calling spendJohnbux Cloud Function:", error);
-                showMessage(`Error spending Johnbux: ${error.message}`, 'error');
-            }
-        }
-
-        function logout() {
-            Parse.User.logOut().then(() => {
-                currentUser = null; 
-                localStorage.removeItem('johnblox_username'); 
-                updateNavAndCurrency(); 
-                window.location.href = "login.html"; 
-            }).catch((error) => {
-                console.error("Error logging out:", error);
-                showMessage(`Error logging out: ${error.message}`, 'error');
-            });
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            updateNavAndCurrency(); 
-
-            // --- Three.js Setup for 3D Scene ---
-            const canvas = document.getElementById('threejs-canvas');
-            if (canvas) {
-                const scene = new THREE.Scene();
-                scene.background = new THREE.Color(0xadd8e6); 
-
-                const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-                camera.position.z = 5;
-
-                const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-                renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-
-                const geometry = new THREE.BoxGeometry(1, 1, 1);
-                const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); 
-                const cube = new THREE.Mesh(geometry, material);
-                scene.add(cube);
-
-                const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-                scene.add(ambientLight);
-
-                const animate = () => {
-                    requestAnimationFrame(animate);
-
-                    cube.rotation.x += 0.01;
-                    cube.rotation.y += 0.01;
-
-                    renderer.render(scene, camera);
-                };
-                animate();
-
-                window.addEventListener('resize', () => {
-                    camera.aspect = canvas.clientWidth / canvas.clientHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-                });
-            }
-        });
     </script>
 </body>
 </html>
