@@ -1,0 +1,226 @@
+/* =========================================
+   JOHNBLOX / SimpleBlox CSS - Comic Sans, Blocky Blue Theme
+   Filename: style.css
+   ========================================= */
+
+/* Base Styles */
+body {
+    margin: 0;
+    padding-top: 55px; /* Space for fixed header */
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    background-color: #c9d4e4; /* Light Blue/Gray Background */
+    color: #000;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Enforce blocky look globally */
+* {
+    border-radius: 0 !important;
+    box-sizing: border-box;
+}
+
+/* Header Styles */
+header {
+    background-color: #0074cc;
+    color: #fff;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #005a9c;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+/* Logo and Site Name */
+#logo-area {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #fff;
+}
+.logo {
+    height: 35px;
+    border: none !important;
+}
+#site-name {
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #000;
+    color: #fff;
+}
+
+/* Navigation Links */
+#header-nav {
+    display: flex;
+    gap: 15px;
+    flex-grow: 1;
+    justify-content: center;
+    margin: 0 10px;
+}
+.nav-item {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+.active-nav-item {
+    background-color: #005a9c;
+    border: 1px solid #005a9c;
+    color: #fff;
+}
+
+/* Auth Links */
+.auth-links {
+    display: flex;
+    gap: 10px;
+}
+.auth-links .nav-item {
+    font-size: 16px;
+    padding: 5px 12px;
+    box-shadow: 1px 1px 0 #000;
+}
+.auth-links .nav-item:first-child {
+    background-color: #ff9900 !important;
+    color: #1c2530 !important;
+    border: 1px solid #cc7a00 !important;
+}
+.auth-links .nav-item:last-child {
+    background-color: #005a9c !important;
+    color: #fff !important;
+    border: 1px solid #0044cc !important;
+}
+
+/* Main Container Layout */
+#app-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #b3d1f0;
+    padding: 20px;
+    border: 1px solid #88aacc;
+    box-shadow: 3px 3px 0 #88aacc;
+    flex-grow: 1;
+    width: 95%;
+}
+
+/* Game Tiles / Panels */
+.game-tile {
+    border: 1px solid #0044cc;
+    box-shadow: 2px 2px 0 #00000030;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    color: #1c2530;
+}
+.game-tile img {
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: #0044cc;
+    border-bottom: 2px solid #0044cc;
+    padding-bottom: 5px;
+}
+
+/* Game Grid */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* Buttons */
+button {
+    background-color: #0074cc !important;
+    color: #fff !important;
+    border: 1px solid #0044cc !important;
+    padding: 6px 12px !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 1px 1px 0 #000;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #005a9c !important;
+}
+
+/* Featured Banner */
+.featured-banner {
+    border: 2px solid #ff0000;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #ffe0e0;
+    color: #000;
+    text-align: center;
+}
+.featured-banner h1 {
+    color: #ff0000;
+    border-bottom: 2px solid #ff0000;
+    margin: 0 0 5px 0;
+}
+
+/* Guest Mode / Info Panels */
+.game-tile.guest {
+    background-color: #e0e6ed;
+    color: #1c2530;
+    text-align: center;
+}
+
+/* Footer */
+#footer {
+    background-color: #e0e6ed;
+    color: #555;
+    padding: 15px 20px;
+    font-size: 12px;
+    text-align: center;
+    border-top: 1px solid #b0b0b0;
+    margin-top: auto;
+    flex-shrink: 0;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+}
+#footer a {
+    color: #0074cc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding-bottom: 10px;
+    }
+    #header-nav {
+        justify-content: space-around;
+        width: 100%;
+        margin: 5px 0;
+        order: 2;
+    }
+    .auth-links {
+        order: 3;
+        width: 100%;
+        justify-content: space-around;
+    }
+    .auth-links .nav-item {
+        flex-grow: 1;
+        text-align: center;
+    }
+    #logo-area {
+        order: 1;
+        margin-bottom: 5px;
+    }
+    body {
+        padding-top: 130px; /* Adjust padding for expanded header on mobile */
+    }
+}
